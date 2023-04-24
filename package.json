@@ -1,6 +1,6 @@
 {
   "name": "typeorm_migration_generator",
-  "version": "1.0.4",
+  "version": "1.0.3",
   "description": "Generates typeorm migration with some default values.",
   "main": "src/index.ts",
   "bin": {
@@ -24,5 +24,9 @@
     "typeorm",
     "generator",
     "migration"
-  ]
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Sparks1998/typeorm_migration_generator.git"
+  }
 }
