@@ -7,7 +7,7 @@ while [ "$#" -gt 0 ]; do
     case "$1" in
         --help|-h|"")
             echo "typeorm_migration_generator [migration_name] -db [database_type]"
-            echo.
+            echo ""
             echo "-h, --help        Print this help log"
             echo "-db               Choose the database type [mysql, pg, oracle, mariadb, mssql]"
             exit
