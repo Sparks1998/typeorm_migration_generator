@@ -1,0 +1,28 @@
+{
+  "name": "typeorm_migration_generator",
+  "version": "1.0.3",
+  "description": "Generates typeorm migration with some default values.",
+  "main": "src/index.ts",
+  "bin": {
+    "typeorm_migration_generator": "bin/typeorm_migration_generator.cmd",
+    "typeorm_migration_generator.sh": "bin/typeorm_migration_generator.sh"
+  },
+  "author": "Abbass Sharara",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^18.16.0"
+  },
+  "dependencies": {
+    "commander": "^10.0.1",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.4"
+  },
+  "keywords": [
+    "typescript",
+    "javascript",
+    "npm",
+    "typeorm",
+    "generator",
+    "migration"
+  ]
+}
