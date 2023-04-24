@@ -1,10 +1,25 @@
 #!/bin/bash
+SCRIPT_PATH="$(dirname "$(readlink -f "$0")")/../dist/index.js"
+DB_TYPE=mysql
+MIGRATION_NAME=""
 
-# Get the path to the script directory
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+while [ "$#" -gt 0 ]; do
+    case "$1" in
+        --help|-h)
+            echo "typeorm_migration_generator [migration_name] -db [database_type]"
+            echo "-h, --help        Print this help log"
+            echo "-db               Choose the database type [mysql, pg, oracle, mariadb, mssql]"
+            exit
+            ;;
+        -db)
+            DB_TYPE=$2
+            shift 2
+            ;;
+        *)
+            MIGRATION_NAME=$1
+            shift
+            ;;
+    esac
+done
 
-# Set the path to the ts-node script from your custom package
-TS_NODE_PATH="$SCRIPT_DIR/../node_modules/.bin/ts-node"
-
-# Run the script using ts-node
-$TS_NODE_PATH $SCRIPT_DIR/../src/index.ts $@
+"$(dirname "$(readlink -f "$0")")/node_modules/.bin/ts-node" "$SCRIPT_PATH" $MIGRATION_NAME $DB_TYPE
