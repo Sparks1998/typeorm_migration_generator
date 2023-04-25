@@ -6,17 +6,18 @@ MIGRATION_NAME=""
 tableName=
 starterCode=1
 
+if [ "$1" == "--help" ] || [ "$1" == "-h" ] || [ "$1" == "" ]; then
+  echo "typeorm_migration_generator [migration_name] -db [database_type]"
+  echo ""
+  echo "-h, --help        Print this help log"
+  echo "-db               Choose the database type [mysql, pg, oracle, mariadb, mssql]"
+  echo "-t, --table       Choose the table name in case you don't want to specify the name automatically"
+  echo "-st, --starter    Choose if you want starter code or not [0 , 1](off, on) default is [1](on)"
+  exit 1
+fi
+
 while [ "$#" -gt 0 ]; do
     case "$1" in
-        --help|-h|"")
-            echo "typeorm_migration_generator [migration_name] -db [database_type]"
-            echo ""
-            echo "-h, --help        Print this help log"
-            echo "-db               Choose the database type [mysql, pg, oracle, mariadb, mssql]"
-            echo "-t, --table       Choose the table name in case you don't want to specify the name automatically"
-            echo "-st, --starter    Choose if you want starter code or not [0 , 1](off, on) default is [1](on)"
-            exit 1
-            ;;
         -db)
             DB_TYPE=$2
             shift 2
