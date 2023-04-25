@@ -5,8 +5,9 @@ MIGRATION_NAME=""
 
 while [ "$#" -gt 0 ]; do
     case "$1" in
-        --help|-h)
+        --help|-h|"")
             echo "typeorm_migration_generator [migration_name] -db [database_type]"
+            echo ""
             echo "-h, --help        Print this help log"
             echo "-db               Choose the database type [mysql, pg, oracle, mariadb, mssql]"
             exit
@@ -22,4 +23,4 @@ while [ "$#" -gt 0 ]; do
     esac
 done
 
-"$(dirname "$(readlink -f "$0")")/node_modules/.bin/ts-node" "$SCRIPT_PATH" $MIGRATION_NAME $DB_TYPE
+"$(dirname "$(readlink -f "$0")")/../node_modules/.bin/ts-node" "$SCRIPT_PATH" $MIGRATION_NAME $DB_TYPE
