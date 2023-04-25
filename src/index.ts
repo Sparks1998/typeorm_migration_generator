@@ -94,7 +94,7 @@ export class ${ fileName }${ timestamp } implements MigrationInterface {
 							}
 						}
 						
-						fs.writeFileSync ( path.resolve ( directoryName , `${ migrationName }` ) , template );
+						fs.writeFileSync ( path.resolve ( directoryName , `${ migrationName }` ) , template);
 						console.log ( `Migration ${ migrationName } has been created.` );
 					}
 				}
