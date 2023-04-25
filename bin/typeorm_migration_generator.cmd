@@ -22,12 +22,17 @@ if "%1" == "" goto :help
 		goto :loop
 	)
 
+if "%MIGRATION_NAME%" == "" (
+	goto :help
+)
+
 "%~dp0node_modules\.bin\ts-node" "%SCRIPT_PATH%" %MIGRATION_NAME% %DB_TYPE%
 
 goto :exit
 
 :help
 	echo typeorm_migration_generator [migration_name] -db [database_type]
+	echo.
 	echo -h, --help        Print this help log
 	echo -db               Choose the database type [mysql, pg, oracle, mariadb, mssql]
 
