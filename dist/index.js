@@ -33,6 +33,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const commander_1 = require("commander");
+const process = __importStar(require("process"));
+const console = __importStar(require("console"));
 const fs = __importStar(require("fs"));
 const path = __importStar(require("path"));
 const DynamicColumns_1 = require("./DynamicColumns");
@@ -45,8 +47,24 @@ function pascalCaseToSnakeCase(s) {
 function getStringNoMigrationWord(name) {
     return name.includes("Migration") ? name.substring(0, name.indexOf("Migration")) : name;
 }
-program.version('0.1.0').arguments('<name>, <dbType>').description('Create a new TypeORM migration').action((name, dbType) => __awaiter(void 0, void 0, void 0, function* () {
+program.version('1.0.10').arguments("<name> <dbType> [starterCode] [tableName]").description('Create a new TypeORM migration').action(() => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        let name, dbType, starterCode, tableName;
+        const args = process.argv.splice(2);
+        for (let item of args) {
+            if (item.includes("migration=")) {
+                name = item.substring("migration=".length);
+            }
+            else if (item.includes("db=")) {
+                dbType = item.substring("db=".length);
+            }
+            else if (item.includes("st=") && item !== "st=") {
+                starterCode = item.substring("st=".length) === "1";
+            }
+            else if (item.includes("t=") && item !== "t=") {
+                tableName = item.substring("t=".length);
+            }
+        }
         const dbTypes = Object.keys(DynamicColumns_1.autoIncrementedColumns);
         if (!dbTypes.includes(dbType)) {
             throw new Error("Un supported database type");
@@ -61,13 +79,13 @@ program.version('0.1.0').arguments('<name>, <dbType>').description('Create a new
         const fileName = path.basename(name);
         const migrationName = `${timestamp}-${fileName}.ts`;
         const template = `import { MigrationInterface , QueryRunner , Table } from "typeorm";
-import { dynamicColumns } from "./DynamicColumns";
+${starterCode ? 'import { dynamicColumns } from "./DynamicColumns";' : ''}
 
 export class ${fileName}${timestamp} implements MigrationInterface {
-	name = '${pascalCaseToSnakeCase(getStringNoMigrationWord(fileName)).toLowerCase()}';
+	name = '${tableName && tableName !== "" ? tableName : pascalCaseToSnakeCase(getStringNoMigrationWord(fileName)).toLowerCase()}';
 	
 	public async up ( queryRunner : QueryRunner ) : Promise<void> {
-		const table = new Table (
+		${starterCode ? `const table = new Table (
 			{
 				name : this.name ,
 				// Extra columns to use add to the table.
@@ -82,11 +100,11 @@ export class ${fileName}${timestamp} implements MigrationInterface {
 			true ,
 			true ,
 			true
-		);
+		);` : ""}
 	}
 	
 	public async down ( queryRunner : QueryRunner ) : Promise<void> {
-		await queryRunner.dropTable ( this.name );
+		${starterCode ? "await queryRunner.dropTable ( this.name );" : ""}
 	}
 }`;
         fs.mkdir(directoryName, {
@@ -96,8 +114,10 @@ export class ${fileName}${timestamp} implements MigrationInterface {
                 console.log(err);
             }
             else {
-                if (!fs.existsSync(path.resolve(directoryName, "DynamicColumns.ts"))) {
-                    fs.writeFileSync(path.resolve(directoryName, "DynamicColumns.ts"), (0, DynamicColumns_1.dynamicColumnsString)(dbType));
+                if (starterCode) {
+                    if (!fs.existsSync(path.resolve(directoryName, "DynamicColumns.ts"))) {
+                        fs.writeFileSync(path.resolve(directoryName, "DynamicColumns.ts"), (0, DynamicColumns_1.dynamicColumnsString)(dbType));
+                    }
                 }
                 fs.writeFileSync(path.resolve(directoryName, `${migrationName}`), template);
                 console.log(`Migration ${migrationName} has been created.`);
