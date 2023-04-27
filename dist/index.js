@@ -82,12 +82,12 @@ program.version('1.0.10').arguments("<name> <dbType> [starterCode] [tableName]")
 ${starterCode ? 'import { dynamicColumns } from "./DynamicColumns";' : ''}
 
 export class ${fileName}${timestamp} implements MigrationInterface {
-	name = '${tableName && tableName !== "" ? tableName : pascalCaseToSnakeCase(getStringNoMigrationWord(fileName)).toLowerCase()}';
+	tableName = '${tableName && tableName !== "" ? tableName : pascalCaseToSnakeCase(getStringNoMigrationWord(fileName)).toLowerCase()}';
 	
 	public async up ( queryRunner : QueryRunner ) : Promise<void> {
 		${starterCode ? `const table = new Table (
 			{
-				name : this.name ,
+				name : this.tableName ,
 				// Extra columns to use add to the table.
 				columns : dynamicColumns (
 					[] ,
@@ -104,7 +104,7 @@ export class ${fileName}${timestamp} implements MigrationInterface {
 	}
 	
 	public async down ( queryRunner : QueryRunner ) : Promise<void> {
-		${starterCode ? "await queryRunner.dropTable ( this.name );" : ""}
+		${starterCode ? "await queryRunner.dropTable ( this.tableName );" : ""}
 	}
 }`;
         fs.mkdir(directoryName, {
