@@ -1,22 +1,37 @@
 export const autoIncrementedColumns : any = {
 	mysql : {
-		auto: "AUTO_INCREMENT",
+		auto: {
+			type: "INTEGER",
+			default: "AUTO_INCREMENT",
+		},
 		timeStamp : "TIMESTAMP"
 	} ,
 	pg :  {
-		auto: "SERIAL" ,
+		auto: {
+			type: "SERIAL",
+			default: "",
+		} ,
 		timeStamp : "TIMESTAMPTZ"
 	} ,
 	oracle :  {
-		auto: "INTEGER",
+		auto: {
+			type: "INTEGER",
+			default: "",
+		},
 		timeStamp : "TIMESTAMP"
 	} ,
 	mariadb :  {
-		auto: "AUTO_INCREMENT",
+		auto: {
+			type: "INTEGER",
+			default: "AUTO_INCREMENT",
+		},
 		timeStamp : "DATETIME"
 	} ,
 	mssql :  {
-		auto: "INT IDENTITY(1,1)",
+		auto: {
+			type: "INT IDENTITY(1,1)",
+			default: "",
+		},
 		timeStamp : "DATETIME2"
 	} ,
 };
@@ -27,7 +42,8 @@ export const dynamicColumnsString = ( dbType = "mysql" ) => {
 export const dynamicColumns = ( columns : TableColumnOptions[] , primaryKeyConstraintName?: string ) => [
 	{
 		name : "id" ,
-		type : "${ autoIncrementedColumns [ dbType ].auto }" ,
+		type : "${ autoIncrementedColumns [ dbType ].auto.type }" ,
+		${ autoIncrementedColumns[dbType].auto.default !== "" ? `default : "${ autoIncrementedColumns [ dbType ].auto.default }"` : "" } ,
 		isPrimary : true ,
 		primaryKeyConstraintName : primaryKeyConstraintName ,
 	} ,
