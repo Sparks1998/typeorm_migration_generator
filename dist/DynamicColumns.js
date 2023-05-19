@@ -45,7 +45,7 @@ export const dynamicColumns = ( columns : TableColumnOptions[] , primaryKeyConst
 	{
 		name : "id" ,
 		type : "${exports.autoIncrementedColumns[dbType].auto.type}${exports.autoIncrementedColumns[dbType].auto.default !==
-        "" ? "" + exports.autoIncrementedColumns[dbType].auto.default : ""}" ,
+        "" ? " " + exports.autoIncrementedColumns[dbType].auto.default : ""}" ,
 		isPrimary : true ,
 		primaryKeyConstraintName : primaryKeyConstraintName ,
 	} ,
