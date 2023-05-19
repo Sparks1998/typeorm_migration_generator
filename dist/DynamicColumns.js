@@ -7,35 +7,35 @@ exports.autoIncrementedColumns = {
             type: "INTEGER",
             default: "AUTO_INCREMENT",
         },
-        timeStamp: "TIMESTAMP"
+        timeStamp: "TIMESTAMP",
     },
     pg: {
         auto: {
             type: "SERIAL",
             default: "",
         },
-        timeStamp: "TIMESTAMPTZ"
+        timeStamp: "TIMESTAMPTZ",
     },
     oracle: {
         auto: {
             type: "INTEGER",
             default: "",
         },
-        timeStamp: "TIMESTAMP"
+        timeStamp: "TIMESTAMP",
     },
     mariadb: {
         auto: {
             type: "INTEGER",
             default: "AUTO_INCREMENT",
         },
-        timeStamp: "DATETIME"
+        timeStamp: "DATETIME",
     },
     mssql: {
         auto: {
             type: "INT IDENTITY(1,1)",
             default: "",
         },
-        timeStamp: "DATETIME2"
+        timeStamp: "DATETIME2",
     },
 };
 const dynamicColumnsString = (dbType = "mysql") => {
@@ -44,8 +44,8 @@ const dynamicColumnsString = (dbType = "mysql") => {
 export const dynamicColumns = ( columns : TableColumnOptions[] , primaryKeyConstraintName?: string ) => [
 	{
 		name : "id" ,
-		type : "${exports.autoIncrementedColumns[dbType].auto.type}" ,
-		${exports.autoIncrementedColumns[dbType].auto.default !== "" ? `default : "${exports.autoIncrementedColumns[dbType].auto.default}"` : ""} ,
+		type : "${exports.autoIncrementedColumns[dbType].auto.type}${exports.autoIncrementedColumns[dbType].auto.default !==
+        "" ? "" + exports.autoIncrementedColumns[dbType].auto.default : ""}" ,
 		isPrimary : true ,
 		primaryKeyConstraintName : primaryKeyConstraintName ,
 	} ,
